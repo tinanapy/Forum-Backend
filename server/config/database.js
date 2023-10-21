@@ -1,19 +1,22 @@
-const mysql = require('mysql')
+const mysql = require("mysql2");
 
+// DB_USER = guqq4mf0ioj99hkn2vbf;
+// DB_PASS = pscale_pw_9hUeK799569Cbsqku1MuFsI0GoTSoK2VLxtrr98v36O;
+// const pool = mysql.createPool({
 
-const pool = mysql.createPool({
- 
-  host: process.env.DB_HOST,
-  user: process.env.DB_USER,
-  password: process.env.DB_PASS,
-  database: process.env.MYSQL_DB,
-  connectionLimit: 10
-});
+//   host: process.env.DB_HOST,
+//   user: process.env.DB_USER,
+//   password: process.env.DB_PASS,
+//   database: process.env.MYSQL_DB,
+//   connectionLimit: 10
+// });
+const pool = mysql.createConnection(process.env.DATABASE_URL);
+// const pool = mysql.createConnection(process.env.DATABASE_URL);
+
 //checking the connection
-pool.getConnection(function (err, connection) {
-  console.log("Database connected!");
-});
-
+// pool.getConnection(function (err, connection) {
+//   console.log("Database connected!");
+// });
 
 let registration = `CREATE TABLE if not exists registration(
   user_id int auto_increment,
@@ -28,7 +31,6 @@ let profile = `CREATE TABLE if not exists profile (
   user_id int not null,
   first_name varchar(255) not null,
   last_name varchar(255) not null,
-  FOREIGN KEY (user_id) REFERENCES registration(user_id),
   PRIMARY KEY (user_profile_id)
 
 )`;
@@ -41,8 +43,8 @@ let question = `CREATE TABLE if not exists question (
   post_id varchar(255) not null,
   user_id int not null,
   PRIMARY KEY (question_id),
-  UNIQUE KEY (post_id),
-  FOREIGN KEY (user_id) REFERENCES registration(user_id)
+  UNIQUE KEY (post_id)
+  
 )`;
 let answer = `CREATE TABLE if not exists answer (
  answer_id int auto_increment,
@@ -50,9 +52,8 @@ let answer = `CREATE TABLE if not exists answer (
   answer_code_block varchar(255),
   user_id int not null,
   question_id int not null,
-  PRIMARY KEY (answer_id),
-  FOREIGN KEY (user_id) REFERENCES registration(user_id),
-  FOREIGN KEY (question_id) REFERENCES question(question_id)
+  PRIMARY KEY (answer_id)
+  
 )`;
 
 pool.query(registration, (err, results) => {
