@@ -1,5 +1,5 @@
 const mysql = require("mysql2");
-
+require("dotenv").config();
 // DB_USER = guqq4mf0ioj99hkn2vbf;
 // DB_PASS = pscale_pw_9hUeK799569Cbsqku1MuFsI0GoTSoK2VLxtrr98v36O;
 // const pool = mysql.createPool({
